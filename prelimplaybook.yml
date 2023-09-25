@@ -1,0 +1,86 @@
+---
+- hosts: all
+  tasks:
+
+  
+  
+  - name: Install python3 in Ubuntu
+    apt:
+      name: python3
+      state: present
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install python3 in CentOS
+    dnf:
+      name: python3
+      state: present
+    when: ansible_distribution == "CentOS"
+
+  - name: Install pip3 in Ubuntu
+    apt:
+      name: python3-pip
+      state: present
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install pip3 in CentOS
+    dnf:
+      name: python3-pip
+      state: present
+    when: ansible_distribution == "CentOS"
+
+  - name: Set pip3 as default pip in Ubuntu
+    alternatives:
+      name: pip
+      link: /usr/bin/pip3
+      path: /usr/bin/pip3
+      state: link
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Set pip3 as default pip in CentOS
+    alternatives:
+      name: pip
+      link: /usr/bin/pip3
+      path: /usr/bin/pip3
+      state: link
+    when: ansible_distribution == "CentOS"
+
+  
+  - name: Set python3 as default python in Ubuntu
+    alternatives:
+      name: python
+      link: /usr/bin/python3
+      state: link
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Set python3 as default python in CentOS
+    alternatives:
+      name: python
+      link: /usr/bin/python3
+      state: link
+    when: ansible_distribution == "CentOS"
+
+  
+  - name: Install Java open-jdk in Ubuntu
+    apt:
+      name: openjdk-11-jdk
+      state: present
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install Java open-jdk in CentOS
+    yum:
+      name: java-11-openjdk-devel
+      state: present
+    when: ansible_distribution == "CentOS"
+
+  
+  - name: Create Motd
+    lineinfile:
+      path: /etc/motd
+      line: "{{ motd_text }}"
+      state: present
+
+  
+  - name: Create user
+    user:
+      name: "{{ username }}"
+      state: present
